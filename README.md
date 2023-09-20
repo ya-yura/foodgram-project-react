@@ -1,1 +1,3 @@
-# praktikum_new_diplom
+# Start!
+
+1. Go!
