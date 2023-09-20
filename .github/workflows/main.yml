@@ -62,7 +62,7 @@ jobs:
         with:
           context: ./infra/
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_gateway:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_infra:latest
   deploy:
     runs-on: ubuntu-latest
     needs: 
