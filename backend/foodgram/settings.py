@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
 
-from rest_framework import authentication
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -126,7 +124,13 @@ ROOT_URLCONF = 'foodgram.urls'
 
 DJOSER = {
     'SERIALIZERS': {
-        'current_user': 'api.serializers.UserSerializer'
+        'current_user': 'api.serializers.UserSerializer',
+        'user_create': 'api.serializers.CustomUserCreateSerializer',
+        'user': 'api.serializers.CustomUserCreateSerializer',
+    },
+    'PERMISSIONS': {
+        'user': ['rest_framework.permissions.AllowAny'],
+        'user_list': ['rest_framework.permissions.AllowAny'],
     },
 }
 
@@ -143,17 +147,3 @@ REST_FRAMEWORK = {
 
 
 LOAD_DATA_DIR = os.path.join(BASE_DIR, 'data')
-
-
-AUTHENTICATION_CLASSES = [
-    'rest_framework.authentication.SessionAuthentication',
-    'rest_framework.authentication.TokenAuthentication',
-]
-
-# Аутентификационный класс для админки Django
-AUTHENTICATION_CLASSES_ADMIN = [
-    'django.contrib.auth.backends.ModelBackend',
-]
-
-# Аутентификационные классы для админки Django
-AUTHENTICATION_CLASSES.extend(AUTHENTICATION_CLASSES_ADMIN)
