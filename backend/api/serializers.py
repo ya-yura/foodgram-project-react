@@ -111,28 +111,6 @@ class CreateUserSerializer(serializers.ModelSerializer):
         return user
 
 
-class CustomUserReadSerializer(serializers.ModelSerializer):
-    is_subscribed = serializers.SerializerMethodField()
-
-    class Meta:
-        model = User
-        fields = (
-            'id',
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-            'is_subscribed'
-        )
-
-    def get_is_subscribed(self, obj):
-        request = self.context.get('request')
-        return (request and request.user.is_authenticated
-                and request.user.subscriptions_user.filter(
-                    author=obj
-                ).exists())
-
-
 # Сериализатор для ингредиента в рецепте
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
     """Сериализатор для ингредиента в рецепте."""
