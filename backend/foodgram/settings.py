@@ -1,6 +1,9 @@
 import os
 from pathlib import Path
 
+from rest_framework import authentication
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', '123')
@@ -140,3 +143,17 @@ REST_FRAMEWORK = {
 
 
 LOAD_DATA_DIR = os.path.join(BASE_DIR, 'data')
+
+
+AUTHENTICATION_CLASSES = [
+    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.TokenAuthentication',
+]
+
+# Аутентификационный класс для админки Django
+AUTHENTICATION_CLASSES_ADMIN = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# Аутентификационные классы для админки Django
+AUTHENTICATION_CLASSES.extend(AUTHENTICATION_CLASSES_ADMIN)
