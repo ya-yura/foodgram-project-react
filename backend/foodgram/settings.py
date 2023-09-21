@@ -7,7 +7,17 @@ SECRET_KEY = os.getenv('SECRET_KEY', '123')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '130.193.43.80', 'mc6.ddns.net']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    '0.0.0.0',
+    '130.193.43.80',
+    'mc6.ddns.net'
+]
+
+
+CORS_ALLOW_ORIGIN = '*'
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
