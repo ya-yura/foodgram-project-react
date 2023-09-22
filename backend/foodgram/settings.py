@@ -135,8 +135,8 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': True,
     'SERIALIZERS': {
-        'user': 'users.serializers.UserSerializer',
-        'user_create': 'users.serializers.CreateUserSerializer',
+        'user': 'api.serializers.UserSerializer',
+        'user_create': 'api.serializers.CreateUserSerializer',
     },
     'EMAIL': {
         'activation': 'djoser.email.ActivationEmail',
