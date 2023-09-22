@@ -5,6 +5,7 @@ volumes:
   static:
   media:
 
+
 services:
 
   db:
@@ -12,18 +13,18 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
-  
+
   backend:
     image: sharikov/foodgram_backend
     env_file: .env
     volumes:
       - static:/backend_static
       - media:/app/media
-      
+
     depends_on:
       - db
     restart: always
-  
+
   frontend:
     image: sharikov/foodgram_frontend
     command: cp -r /app/build/. /frontend_static/
@@ -31,14 +32,14 @@ services:
       - static:/frontend_static
     depends_on:
       - db
-  
+
   gateway:
     image: sharikov/foodgram_infra
     env_file: .env
     volumes:
       - static:/staticfiles/
       - media:/media
-      - ./docs/:/usr/share/nginx/html/api/docs/
+      - ../docs/:/usr/share/nginx/html/api/docs/
     ports:
       - 8000:80
     depends_on:
