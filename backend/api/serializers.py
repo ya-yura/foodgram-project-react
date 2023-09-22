@@ -106,7 +106,9 @@ class UserSerializer(serializers.ModelSerializer):
         """
         request = self.context.get('request')
         user = request.user
-        return Follow.objects.filter(user=user.id, following=obj).exists()      
+        return Follow.objects.filter(
+            user=user.id, following=obj
+        ).exists()
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
