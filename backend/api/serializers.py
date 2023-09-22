@@ -60,33 +60,6 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'measurement_unit')
 
 
-# Сериализатор для пользователя
-class UserSerializer(serializers.ModelSerializer):
-    """Сериализатор для пользователя."""
-
-    is_subscribed = serializers.SerializerMethodField()
-
-    class Meta:
-        model = User
-        fields = (
-            'email',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'is_subscribed',
-        )
-
-    def get_is_subscribed(self, obj):
-        """
-        Метод, определяющий, подписан ли текущий пользователь
-        на другого пользователя.
-        """
-        request = self.context.get('request')
-        user = request.user
-        return Follow.objects.filter(user=user.id, following=obj).exists()
-
-
 # Сериализатор для создания пользователя
 # class CreateUserSerializer(serializers.ModelSerializer):
 #     """Сериализатор для создания пользователя."""
@@ -110,17 +83,45 @@ class UserSerializer(serializers.ModelSerializer):
 #         user.save()
 #         return user
 
+
+# Сериализатор для пользователя
 class UserSerializer(serializers.ModelSerializer):
+    is_subscribed = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+        fields = (
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'is_subscribed',
+        )
+
+    def get_is_subscribed(self, obj):
+        """
+        Метод, определяющий, подписан ли текущий пользователь
+        на другого пользователя.
+        """
+        request = self.context.get('request')
+        user = request.user
+        return Follow.objects.filter(user=user.id, following=obj).exists()      
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password']
+        fields = [
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'password'
+        ]
         extra_kwargs = {'password': {'write_only': True}}
+
 
 # Сериализатор для ингредиента в рецепте
 class IngredientInRecipeSerializer(serializers.ModelSerializer):

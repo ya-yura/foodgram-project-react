@@ -11,14 +11,9 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    '0.0.0.0',
     '130.193.43.80',
     'mc6.ddns.net'
 ]
-
-
-CORS_ALLOW_ORIGIN = '*'
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,19 +29,19 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'app.apps.AppConfig',
     'api.apps.ApiConfig',
+    'import_export',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'foodgram.urls'
 
 TEMPLATES = [
     {
@@ -102,6 +97,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+ROOT_URLCONF = 'foodgram.urls'
+
+LOAD_DATA_DIR = os.path.join(BASE_DIR, 'data')
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -155,6 +154,3 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 6,
 }
-
-
-LOAD_DATA_DIR = os.path.join(BASE_DIR, 'data')
