@@ -4,7 +4,7 @@ from api.pagination import LimitPageNumberPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
     CreateRecipeSerializer,
-    CreateUserSerializer,
+    UserCreateSerializer,
     FavouriteAndShoppingCartSerializer,
     FollowSerializer,
     IngredientSerializer,
