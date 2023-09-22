@@ -111,7 +111,7 @@ class UserSerializer(serializers.ModelSerializer):
         ).exists()
 
 
-class UserCreateSerializer(serializers.ModelSerializer):
+class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [

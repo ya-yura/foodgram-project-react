@@ -136,7 +136,7 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
     'SERIALIZERS': {
         'user': 'users.serializers.UserSerializer',
-        'user_create': 'users.serializers.UserCreateSerializer',
+        'user_create': 'users.serializers.CreateUserSerializer',
     },
     'EMAIL': {
         'activation': 'djoser.email.ActivationEmail',
