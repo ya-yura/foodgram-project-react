@@ -12,7 +12,14 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     '130.193.43.80',
-    'mc6.ddns.net'
+    'mc6.ddns.net',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    '*.127.0.0.1',
+    '*.localhost',
+    '*.130.193.43.80',
+    '*.mc6.ddns.net',
 ]
 
 INSTALLED_APPS = [
