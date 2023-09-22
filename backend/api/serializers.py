@@ -88,28 +88,39 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 # Сериализатор для создания пользователя
-class CreateUserSerializer(serializers.ModelSerializer):
-    """Сериализатор для создания пользователя."""
+# class CreateUserSerializer(serializers.ModelSerializer):
+#     """Сериализатор для создания пользователя."""
 
+#     class Meta:
+#         model = User
+#         fields = (
+#             'email',
+#             'id',
+#             'username',
+#             'first_name',
+#             'last_name',
+#             'password',
+#         )
+#         read_only_fields = ('id',)
+#         extra_kwargs = {'password': {'write_only': True}}
+
+#     def create(self, validated_data):
+#         user = User(**validated_data)
+#         user.set_password(validated_data['password'])
+#         user.save()
+#         return user
+
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = (
-            'email',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'password',
-        )
-        read_only_fields = ('id',)
+        fields = ['id', 'username', 'first_name', 'last_name', 'email']
+
+
+class UserCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password']
         extra_kwargs = {'password': {'write_only': True}}
-
-    def create(self, validated_data):
-        user = User(**validated_data)
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
-
 
 # Сериализатор для ингредиента в рецепте
 class IngredientInRecipeSerializer(serializers.ModelSerializer):

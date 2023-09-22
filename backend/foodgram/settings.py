@@ -122,15 +122,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ROOT_URLCONF = 'foodgram.urls'
 
+# DJOSER = {
+#     'SERIALIZERS': {
+#         'current_user': 'api.serializers.UserSerializer',
+#     },
+#     'PERMISSIONS': {
+#         'user': ['rest_framework.permissions.AllowAny'],
+#         'user_list': ['rest_framework.permissions.AllowAny'],
+#     },
+# }
+
 DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
     'SERIALIZERS': {
-        'current_user': 'api.serializers.UserSerializer',
+        'user': 'users.serializers.UserSerializer',
+        'user_create': 'users.serializers.UserCreateSerializer',
     },
-    'PERMISSIONS': {
-        'user': ['rest_framework.permissions.AllowAny'],
-        'user_list': ['rest_framework.permissions.AllowAny'],
+    'EMAIL': {
+        'activation': 'djoser.email.ActivationEmail',
     },
 }
+
 
 AUTH_USER_MODEL = 'users.User'
 
