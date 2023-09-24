@@ -19,6 +19,7 @@ from rest_framework import serializers
 User = get_user_model()
 
 
+# Сериализатор для связи с ингредиентом и его количеством в рецепте
 class IngredientKeyedRelatedField(serializers.PrimaryKeyRelatedField):
     """
     Поле, обрабатывающее идентификатор ингредиента и его количество в рецепте.
