@@ -93,7 +93,6 @@ class CustomUserViewSet(ListRetrieveCreateViewSet):
         permission_classes=(permissions.IsAuthenticated,),
     )
     def subscribe(self, request, pk):
-        user = request.user
         following = get_object_or_404(User, pk=pk)
         self.check_object_permissions(request, following)
 
