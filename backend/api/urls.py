@@ -1,14 +1,15 @@
-from rest_framework import routers
-from django.urls import include, path
-
-from djoser.views import UserViewSet
-
 from api.views import (
     CustomUserViewSet,
     IngredientViewSet,
     RecipeViewSet,
     TagViewSet,
 )
+
+from django.urls import include, path
+
+from djoser.views import UserViewSet
+
+from rest_framework import routers
 
 
 # Создаем роутер для автоматической генерации URL-адресов
