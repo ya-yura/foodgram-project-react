@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 
 from drf_extra_fields.fields import Base64ImageField
@@ -19,26 +18,9 @@ from app.models import (
 User = get_user_model()
 
 
-class IngredientKeyedRelatedField(serializers.PrimaryKeyRelatedField):
-    """
-    Поле, обрабатывающее идентификатор ингредиента и его количество в рецепте.
-    """
-    def get_queryset(self):
-        return Ingredient.objects.all()
-
-    def to_internal_value(self, data):
-        try:
-            ingredient = self.get_queryset().get(id=data['id'])
-            amount = data['amount']
-            return (ingredient, amount)
-        except ObjectDoesNotExist:
-            self.fail('does_not_exist', pk_value=data['id'])
-        except (TypeError, ValueError):
-            self.fail('incorrect_type', data_type=type(data['id']).__name__)
-
+class IngredientKeyedRelatedField(serializers.DictField):
     def to_representation(self, value):
-        ingredient, amount = value
-        return {'id': ingredient.id, 'amount': amount}
+        return {'id': value['id'], 'amount': value['amount']}
 
 
 class TagSerializer(serializers.ModelSerializer):
