@@ -184,7 +184,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         user = request.user  # Получаем текущего пользователя из запроса
         ingredients_data = validated_data.pop('ingredients')
-        tag_set = validated_data.pop('tag_set')
+        tags = validated_data.pop('tag_set')  # Теперь мы получаем список объектов Tag
 
         # Создаем рецепт с указанием автора (пользователя)
         recipe = Recipe.objects.create(author=user, **validated_data)
@@ -203,10 +203,11 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
                 continue
 
         # Создаем связи с тегами
-        for tag in tag_set:
-            TagForRecipe.objects.create(recipe=recipe, tag=tag)
+        for tag in tags:
+            recipe.tags.add(tag)  # Добавляем теги к рецепту
 
         return recipe
+
 
 
 class FavouriteAndShoppingCartSerializer(serializers.ModelSerializer):
