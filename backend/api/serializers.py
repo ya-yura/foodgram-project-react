@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from django.db import transaction
 
 from drf_extra_fields.fields import Base64ImageField
 
@@ -155,8 +156,10 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 class CreateRecipeSerializer(serializers.ModelSerializer):
     ingredients = serializers.ListField(
-        child=IngredientKeyedRelatedField(),
-        write_only=True,
+        child=serializers.DictField(
+            child=serializers.CharField(),
+            allow_empty=False
+        ),
     )
     tags = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -176,29 +179,31 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             'cooking_time',
         )
 
+    @transaction.atomic
     def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user  # Получаем текущего пользователя из запроса
         ingredients_data = validated_data.pop('ingredients')
-        tags_data = validated_data.pop('tag_set')
+        tag_set = validated_data.pop('tag_set')
 
-        # Создание рецепта
-        recipe = Recipe.objects.create(**validated_data)
+        # Создаем рецепт с указанием автора (пользователя)
+        recipe = Recipe.objects.create(author=user, **validated_data)
 
-        # Создание связей с ингредиентами
-        ingredient_list = []
+        # Создаем связи с ингредиентами
         for ingredient_data in ingredients_data:
-            ingredient = Ingredient.objects.get(id=ingredient_data['id'])
-            amount = ingredient_data['amount']
-            ingredient_list.append(
-                IngredientInRecipe(
+            try:
+                ingredient = Ingredient.objects.get(id=ingredient_data['id'])
+                amount = ingredient_data['amount']
+                IngredientInRecipe.objects.create(
                     recipe=recipe,
                     ingredient=ingredient,
                     amount=amount,
                 )
-            )
-        IngredientInRecipe.objects.bulk_create(ingredient_list)
+            except Ingredient.DoesNotExist:
+                continue
 
-        # Создание связей с тегами
-        for tag in tags_data:
+        # Создаем связи с тегами
+        for tag in tag_set:
             TagForRecipe.objects.create(recipe=recipe, tag=tag)
 
         return recipe
