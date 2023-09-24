@@ -161,7 +161,11 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             allow_empty=False
         ),
     )
-    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
+    tags = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Tag.objects.all(),
+        source='tag_set'
+    )
     image = Base64ImageField()
 
     class Meta:
@@ -201,11 +205,31 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         user = request.user
         ingredients = validated_data.pop('ingredients')
-        tags = validated_data.pop('tags')
+        tag_set = validated_data.pop('tag_set')
 
         recipe = Recipe.objects.create(author=user, **validated_data)
-        self.create_ingredient(ingredients, recipe)
-        self.create_tag(tags, recipe)
+
+        # Создание связей с ингредиентами
+        ingredient_list = []
+        for obj in ingredients:
+            try:
+                ingredient = Ingredient.objects.get(id=obj['id'])
+                amount = obj['amount']
+                ingredient_list.append(
+                    IngredientInRecipe(
+                        recipe=recipe,
+                        ingredient=ingredient,
+                        amount=amount,
+                    )
+                )
+            except Ingredient.DoesNotExist:
+                continue
+        IngredientInRecipe.objects.bulk_create(ingredient_list)
+
+        # Создание связей с тегами
+        for tag in tag_set:
+            TagForRecipe.objects.create(recipe=recipe, tag=tag)
+
         return recipe
 
 
