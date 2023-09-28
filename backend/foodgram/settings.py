@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', '123')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -62,6 +62,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -113,6 +120,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ROOT_URLCONF = 'foodgram.urls'
+
+# DJOSER = {
+#     'SERIALIZERS': {
+#         'current_user': 'api.serializers.UserSerializer',
+#     },
+#     'PERMISSIONS': {
+#         'user': ['rest_framework.permissions.AllowAny'],
+#         'user_list': ['rest_framework.permissions.AllowAny'],
+#     },
+# }
 
 DJOSER = {
     'LOGIN_FIELD': 'email',

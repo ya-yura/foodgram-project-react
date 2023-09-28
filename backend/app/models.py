@@ -1,9 +1,9 @@
+from app.validators import validate_HEX_format
+
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from app.validators import validate_HEX_format
 
 User = get_user_model()
 
