@@ -191,7 +191,11 @@ class RecipeViewSet(ModelViewSet):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    @action
+    @action(
+        detail=True,
+        methods=['delete'],
+        permission_classes=(permissions.IsAuthenticated,),
+    )
     def remove_from_favorite(self, request, pk):
         user = request.user
         recipe = get_object_or_404(Recipe, pk=pk)
