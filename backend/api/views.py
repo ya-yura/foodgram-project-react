@@ -193,7 +193,7 @@ class RecipeViewSet(ModelViewSet):
         )
 
     @add_to_favorite.mapping.delete
-    def remove_from_favorite(self, request, pk):
+    def delete_from_favorite(self, request, pk):
         user = request.user
         recipe = get_object_or_404(Recipe, pk=pk)
 
