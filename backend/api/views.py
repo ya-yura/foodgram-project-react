@@ -192,8 +192,8 @@ class RecipeViewSet(ModelViewSet):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    @add_to_favorite.mapping.delete
-    def delete_from_favorite(self, request, pk):
+    @action
+    def remove_from_favorite(self, request, pk):
         user = request.user
         recipe = get_object_or_404(Recipe, pk=pk)
 
